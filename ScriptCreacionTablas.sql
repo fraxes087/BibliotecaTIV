@@ -1,6 +1,8 @@
 --TABLA USUARIO
 CREATE TABLE [dbo].[Users](
 [id_user] [int] IDENTITY(1,1) NOT NULL,
+[username][varchar](50)NOT NULL,
+[password][varchar](8)NOT NULL,
 [first_name] [varchar](50) NOT NULL,
 [last_first_name] [varchar](50) NOT NULL,
 [id_role][int]NOT NULL,
