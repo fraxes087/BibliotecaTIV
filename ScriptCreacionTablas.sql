@@ -1,89 +1,113 @@
 --TABLA USUARIO
-CREATE TABLE [dbo].[Usuarios](
-[id_usuario] [int] IDENTITY(1,1) NOT NULL,
-[nombre] [varchar](50) NOT NULL,
-[apellido] [varchar](50) NOT NULL,
-[id_rol][int]NOT NULL,
+CREATE TABLE [dbo].[Users](
+[id_user] [int] IDENTITY(1,1) NOT NULL,
+[first_name] [varchar](50) NOT NULL,
+[last_first_name] [varchar](50) NOT NULL,
+[id_role][int]NOT NULL,
+[id_gender][int]NOT NULL,
 [mail][varchar](100)NOT NULL,
-[fechaNac][date],
-[fecha_alta][date]NOT NULL,
-CONSTRAINT [PK_Usuarios] PRIMARY KEY CLUSTERED
+[birthDate][date],
+[date_sign][date]NOT NULL,
+CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED
 	(
-	[id_usuario] ASC
+	[id_user] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
+= ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+--TABLA GENDERS
+CREATE TABLE [dbo].[Genders](
+[id_gender][int] IDENTITY(1,1)NOT NULL,
+[description][varchar](50)NOT NULL,
+CONSTRAINT [PK_Genders] PRIMARY KEY CLUSTERED
+	(
+	[id_gender] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 --TABLA ROLES USUARIO
-CREATE TABLE [dbo].[RolesUsuarios](
-[id_rol][int] IDENTITY(1,1)NOT NULL,
-[descripcion][varchar](50)NOT NULL,
-CONSTRAINT [PK_RolesUsuarios] PRIMARY KEY CLUSTERED
+CREATE TABLE [dbo].[UserRoles](
+[id_role][int] IDENTITY(1,1)NOT NULL,
+[description][varchar](50)NOT NULL,
+CONSTRAINT [PK_UserRoles] PRIMARY KEY CLUSTERED
 	(
-	[id_rol] ASC
+	[id_role] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 --TABLA LIBROS
-CREATE TABLE [dbo].[Libros](
-[id_libro] [int] IDENTITY (1,1) NOT NULL,
+CREATE TABLE [dbo].[Books](
+[id_book] [int] IDENTITY (1,1) NOT NULL,
 [titulo] [varchar] (100) NOT NULL,
-[id_editorial] [int] NOT NULL,
-[id_autor][int] NOT NULL,
-[id_genero] [int] NOT NULL,
-[edicion] [int],
-CONSTRAINT [PK_Libros] PRIMARY KEY CLUSTERED
+[id_publisher] [int] NOT NULL,
+[id_author][int] NOT NULL,
+[id_genre] [int] NOT NULL,
+[edition] [int],
+CONSTRAINT [PK_Books] PRIMARY KEY CLUSTERED
 	(
-	[id_libro] ASC
+	[id_book] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
+= ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+--TABLA GENEROS
+CREATE TABLE [dbo].[Genres](
+[id_genre] [int] IDENTITY (1,1) NOT NULL,
+[description] [varchar](100) NOT NULL,
+CONSTRAINT [PK_Genres] PRIMARY KEY CLUSTERED
+	(
+	[id_genre] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 --TABLA EDITORIALES
-CREATE TABLE [dbo].[Editoriales](
-[id_editorial] [int] IDENTITY (1,1) NOT NULL,
-[nombre] [varchar](100) NOT NULL,
-CONSTRAINT [PK_Editoriales] PRIMARY KEY CLUSTERED
+CREATE TABLE [dbo].[Publishers](
+[id_publisher] [int] IDENTITY (1,1) NOT NULL,
+[full_name] [varchar](100) NOT NULL,
+CONSTRAINT [PK_Publishers] PRIMARY KEY CLUSTERED
 	(
-	[id_editorial] ASC
+	[id_publisher] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 --TABLA AUTORES
-CREATE TABLE [dbo].[Autores](
-[id_autor] [int ]IDENTITY (1,1) NOT NULL,
-[apellido] [varchar] (100) NOT NULL, 
-[nombre] [varchar] (100) NOT NULL,
-CONSTRAINT [PK_Autores] PRIMARY KEY CLUSTERED
+CREATE TABLE [dbo].[Authors](
+[id_author] [int]IDENTITY (1,1) NOT NULL,
+[last_first_name] [varchar] (100) NOT NULL, 
+[first_name] [varchar] (100) NOT NULL,
+CONSTRAINT [PK_Authors] PRIMARY KEY CLUSTERED
 	(
-	[id_autor] ASC
+	[id_author] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 -- TABLA ESTADO DE RENTA
-CREATE TABLE [dbo].[Estados_Renta](
-[id_estado] [int] IDENTITY (1,1) NOT NULL,
-[estado] [varchar] (50) NOT NULL,
-CONSTRAINT [PK_Estados_Renta] PRIMARY KEY CLUSTERED
+CREATE TABLE [dbo].[Rent_States](
+[id_state] [int] IDENTITY (1,1) NOT NULL,
+[description] [varchar] (50) NOT NULL,
+CONSTRAINT [PK_Rent_States] PRIMARY KEY CLUSTERED
 	(
-	[id_estado] ASC
+	[id_state] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 -- TABLA RENTAS
-CREATE TABLE [dbo].[Rentas](
-[id_renta] [int] IDENTITY (1,1) NOT NULL,
-[id_estado] [int] NOT NULL,
-[id_usuario] [int] NOT NULL,
-[fecha_ren] [date] NOT NULL,
-[fecha_dev] [date],
-CONSTRAINT [PK_Rentas] PRIMARY KEY CLUSTERED
+CREATE TABLE [dbo].[Rents](
+[id_rent] [int] IDENTITY (1,1) NOT NULL,
+[id_state] [int] NOT NULL,
+[id_user] [int] NOT NULL,
+[id_book][int]NOT NULL,
+[ren_date] [date] NOT NULL,
+[ret_date] [date],
+CONSTRAINT [PK_Rents] PRIMARY KEY CLUSTERED
 	(
-	[id_renta] ASC
+	[id_rent] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
@@ -91,8 +115,8 @@ CONSTRAINT [PK_Rentas] PRIMARY KEY CLUSTERED
 --TABLA STOCK
 CREATE TABLE [dbo].[Stock](
 [id_stock] [int] IDENTITY (1,1) NOT NULL,
-[id_libro] [int] NOT NULL,
-[cantidad] [int] NOT NULL,
+[id_book] [int] NOT NULL,
+[cant] [int] NOT NULL,
 CONSTRAINT [PK_Stock] PRIMARY KEY CLUSTERED
     (
 	[id_stock] ASC
@@ -100,49 +124,83 @@ CONSTRAINT [PK_Stock] PRIMARY KEY CLUSTERED
 = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
---Usuarios tiene Roles
-ALTER TABLE [dbo].[Usuarios] WITH CHECK ADD CONSTRAINT [RolesUsuarios_PK_Usuarios_FK] FOREIGN
-KEY([id_rol])
-REFERENCES [dbo].[RolesUsuarios] ([id_rol])
+--Users tiene Roles
+ALTER TABLE [dbo].[Users] WITH CHECK ADD CONSTRAINT [UserRoles_PK_Users_FK] FOREIGN
+KEY([id_role])
+REFERENCES [dbo].[UserRoles] ([id_role])
 GO
 
-ALTER TABLE [dbo].[Usuarios] CHECK CONSTRAINT [RolesUsuarios_PK_Usuarios_FK]
-GO
---Rentas tiene Usuarios
-ALTER TABLE [dbo].[Rentas] WITH CHECK ADD CONSTRAINT [Usuarios_PK_Rentas_FK] FOREIGN
-KEY([id_usuario])
-REFERENCES [dbo].[Usuarios] ([id_usuario])
+ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [UserRoles_PK_Users_FK]
 GO
 
-ALTER TABLE [dbo].[Rentas] CHECK CONSTRAINT [Usuarios_PK_Rentas_FK]
+--Users tiene Gender
+ALTER TABLE [dbo].[Users] WITH CHECK ADD CONSTRAINT [Genders_PK_Users_FK] FOREIGN
+KEY([id_gender])
+REFERENCES [dbo].[Genders] ([id_gender])
+GO
+
+ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [Genders_PK_Users_FK]
+GO
+
+--Rents tiene Users
+ALTER TABLE [dbo].[Rents] WITH CHECK ADD CONSTRAINT [Users_PK_Rents_FK] FOREIGN
+KEY([id_user])
+REFERENCES [dbo].[Users] ([id_user])
+GO
+
+ALTER TABLE [dbo].[Rents] CHECK CONSTRAINT [Users_PK_Rents_FK]
 GO
 
 --Stock tiene Libro
-ALTER TABLE [dbo].[Stock] WITH CHECK ADD CONSTRAINT [Libros_PK_Stock_FK] FOREIGN
-KEY([id_libro])
-REFERENCES [dbo].[Libros] ([id_libro])
+ALTER TABLE [dbo].[Stock] WITH CHECK ADD CONSTRAINT [Books_PK_Stock_FK] FOREIGN
+KEY([id_book])
+REFERENCES [dbo].[Books] ([id_book])
 GO
 
-ALTER TABLE [dbo].[Stock] CHECK CONSTRAINT [Libros_PK_Stock_FK]
+ALTER TABLE [dbo].[Stock] CHECK CONSTRAINT [Books_PK_Stock_FK]
 GO
 
---Libros tiene Editoriales CHEQUEAR
-ALTER TABLE [dbo].[Libros] WITH CHECK ADD CONSTRAINT [Editoriales_PK_Libros_FK] FOREIGN
-KEY([id_editorial])
-REFERENCES [dbo].[Editoriales] ([id_editorial])
+--Books tiene Publishers CHEQUEAR
+ALTER TABLE [dbo].[Books] WITH CHECK ADD CONSTRAINT [Publishers_PK_Books_FK] FOREIGN
+KEY([id_publisher])
+REFERENCES [dbo].[Publishers] ([id_publisher])
 GO
 
-ALTER TABLE [dbo].[Libros] WITH CHECK ADD CONSTRAINT [Editoriales_PK_Libros_FK]
+ALTER TABLE [dbo].[Books] WITH CHECK ADD CONSTRAINT [Publishers_PK_Books_FK]
 GO
 
-
---Libros tiene Autores
-ALTER TABLE [dbo].[Libros] WITH CHECK ADD CONSTRAINT [Autores_PK_Libros_FK] FOREIGN
-KEY([id_autor])
-REFERENCES [dbo].[Autores] ([id_autor])
+--Books tiene Genres 
+ALTER TABLE [dbo].[Books] WITH CHECK ADD CONSTRAINT [Genres_PK_Books_FK] FOREIGN
+KEY([id_genre])
+REFERENCES [dbo].[Genres] ([id_genre])
 GO
 
-ALTER TABLE [dbo].[Libros] CHECK CONSTRAINT [Autores_PK_Libros_FK]
+ALTER TABLE [dbo].[Books] CHECK CONSTRAINT [Genres_PK_Books_FK]
 GO
 
---Rentas -> Estado_Rentas
+--Books tiene Authors
+ALTER TABLE [dbo].[Books] WITH CHECK ADD CONSTRAINT [Authors_PK_Books_FK] FOREIGN
+KEY([id_author])
+REFERENCES [dbo].[Authors] ([id_author])
+GO
+
+ALTER TABLE [dbo].[Books] CHECK CONSTRAINT [Authors_PK_Books_FK]
+GO
+
+--Rents tiene Rent_States
+ALTER TABLE [dbo].[Rents] WITH CHECK ADD CONSTRAINT [Rent_States_PK_Rents_FK] FOREIGN
+KEY([id_state])
+REFERENCES [dbo].[Rent_States] ([id_state])
+GO
+
+ALTER TABLE [dbo].[Rents] CHECK CONSTRAINT [Rent_States_PK_Rents_FK]
+GO
+
+--Rents tiene Books
+ALTER TABLE [dbo].[Rents] WITH CHECK ADD CONSTRAINT [Books_PK_Rents_FK] FOREIGN
+KEY([id_book])
+REFERENCES [dbo].[Books] ([id_book])
+GO
+
+ALTER TABLE [dbo].[Rents] CHECK CONSTRAINT [Books_PK_Rents_FK]
+GO
