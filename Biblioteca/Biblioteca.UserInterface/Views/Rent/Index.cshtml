@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Biblioteca.UserInterface.Models.Rent>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div style="color:red">@ViewBag.Error</div>
+
+<table class="table table-condensed table-hover">
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Rent State
+        </th>
+        <th>
+            User
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Reserve Date
+        </th>
+        <th>
+            Rent Date    
+        </th>
+        <th>
+            Return Date
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.id_rent)
+        </td>
+        <td>
+            <span class="state">@Html.DisplayFor(modelItem => item.state.description)</span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user.username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.book.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.res_date)
+        </td>
+        <td>
+           <span class="rentDate"> @Html.DisplayFor(modelItem => item.ren_date)</span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ret_date)
+        </td>
+        <td>
+            @Html.ActionLink("Create", "Rent", new { book=item.book, res_date=System.DateTime.Now }) |
+            @Html.ActionLink("Cancel", "Rent", new { id=item.id_rent })
+        </td>
+    </tr>
+}
+
+</table>
+
+<script type="text/javascript">
+    $(function () {
+        
+        $(".state").each(function () {
+            if ($(this)[0].innerText == "CANCELLED") {
+                $(this).parent().parent().addClass('danger');
+            }
+            if ($(this)[0].innerText == "RENTED") {
+                $(this).parent().parent().addClass('warning');
+            }
+        })
+
+    });
+</script>

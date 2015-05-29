@@ -1,0 +1,47 @@
+﻿@model Biblioteca.UserInterface.Models.Rent
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Rent</legend>
+        <div class="editor-label">
+            @Html.Label("Book Title")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("bookId", (SelectList)@ViewBag.bookList, "Select Book")
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Reserve from Date")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.res_date, new { @class = "datePicker" })
+            @Html.ValidationMessageFor(model => model.res_date)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    $(function(
+        $
+    ){});
+    </script>
+}
