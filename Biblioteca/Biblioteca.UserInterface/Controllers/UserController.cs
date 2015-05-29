@@ -32,8 +32,6 @@ namespace Biblioteca.UserInterface.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public ActionResult Index(User ActUser, bool Remember) {
             Helper help = new Helper();
             Entities.User entUser = new Entities.User();
@@ -71,6 +69,35 @@ namespace Biblioteca.UserInterface.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult register(User user, int genderId)
+        {
+            try
+            {
+                user.gender.id_gender = genderId;
+                Helper helper = new Helper();
+                if (this.userManager.registerNewUser(helper.ModelToEntities(user)))
+                {
+                    return RedirectToAction("Index", "Book");
+                }
+                else
+                {
+                    ViewBag.Error = "The user already exists";
+                    List<Gender> genderList = new List<Gender>();
+                    foreach (var curGender in this.genderManager.getAllGenders())
+                    {
+                        genderList.Add(helper.EntitiesToModel(curGender));
+                    }
+                    ViewBag.genderList = new SelectList(genderList, "id_gender", "description");
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public ActionResult Profile() {
             if (!User.Identity.IsAuthenticated)
             {
@@ -82,43 +109,52 @@ namespace Biblioteca.UserInterface.Controllers
             return View(modUser);
         }
 
-        public ActionResult Edit(User user) { 
-            if(!User.Identity.IsAuthenticated){
-                return RedirectToAction("Home","User");
+        
+
+        public ActionResult EditProfile(string userName)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Home", "User");
             }
+            Helper helper = new Helper();
+            User user = helper.EntitiesToModel(this.userManager.FindUserByUserName(userName));
+            user.valPass = user.password;
+            List<Gender> genderList = new List<Gender>();
+            foreach (var curGender in this.genderManager.getAllGenders())
+            {
+                genderList.Add(helper.EntitiesToModel(curGender));
+            }
+
+            ViewBag.genderList = new SelectList(genderList, "id_gender", "description");
             return View(user);
         }
 
         [HttpPost]
-        public ActionResult Edit(User user) {
-            return View();
-        }
-
-
-        [HttpPost]
-        public ActionResult register(User user, int genderId) {
-            try {
-                user.gender.id_gender = genderId;
-                Helper helper = new Helper();
-                if (this.userManager.registerNewUser(helper.ModelToEntities(user)))
+        public ActionResult EditProfile(User user, int genderId)
+        {
+            Helper helper = new Helper();
+            user.gender.id_gender = genderId;
+            if (this.userManager.editUser(helper.ModelToEntities(user)))
+            {
+                return RedirectToAction("Profile", "User");
+            }
+            else
+            {
+                List<Gender> genderList = new List<Gender>();
+                foreach (var curGender in this.genderManager.getAllGenders())
                 {
-                    return RedirectToAction("Index", "Book");
+                    genderList.Add(helper.EntitiesToModel(curGender));
                 }
-                else {
-                    ViewBag.Error = "The user already exists";
-                    List<Gender> genderList = new List<Gender>();
-                    foreach (var curGender in this.genderManager.getAllGenders())
-                    {
-                        genderList.Add(helper.EntitiesToModel(curGender));
-                    }
-                    ViewBag.genderList = new SelectList(genderList, "id_gender", "description");
-                    return View();
-                }
+
+                ViewBag.genderList = new SelectList(genderList, "id_gender", "description");
+                ViewBag.Error = "An unexpected error has occurred";
             }
-            catch (Exception ex){
-                throw new Exception(ex.Message);
-            }
+            return View(user);
         }
+
+
+        
 
         public ActionResult UserProfile() {
             if (!User.Identity.IsAuthenticated)

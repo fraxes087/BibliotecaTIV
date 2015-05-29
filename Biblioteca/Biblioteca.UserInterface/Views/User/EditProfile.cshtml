@@ -1,0 +1,96 @@
+﻿@model Biblioteca.UserInterface.Models.User
+
+@{
+    ViewBag.Title = "EditProfile";
+}
+
+<h2>EditProfile</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <h3 style="color:red">@ViewBag.Error</h3>
+    <fieldset>
+        <legend>User</legend>
+
+        @Html.HiddenFor(model => model.id_user)
+        @Html.HiddenFor(model => model.date_sign)
+        @Html.HiddenFor(model => model.role.id_role)
+        @Html.HiddenFor(model => model.role.description)
+
+        <div class="editor-label">
+            @Html.Label("Username")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.username)
+            @Html.ValidationMessageFor(model => model.username)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Password")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.password)
+            @Html.ValidationMessageFor(model => model.password)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Repeat Password")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.valPass)
+            @Html.ValidationMessageFor(model => model.valPass)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("First Name")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.first_name)
+            @Html.ValidationMessageFor(model => model.first_name)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Last Name")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.last_name)
+            @Html.ValidationMessageFor(model => model.last_name)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Gender")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("genderId", (SelectList)@ViewBag.genderList, "Select gender")
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.mail)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.mail)
+            @Html.ValidationMessageFor(model => model.mail)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.birthDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.birthDate)
+            @Html.ValidationMessageFor(model => model.birthDate)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

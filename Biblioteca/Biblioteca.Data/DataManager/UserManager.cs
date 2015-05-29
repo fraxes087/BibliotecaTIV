@@ -75,6 +75,43 @@ namespace Biblioteca.Data
             return null;
         }
 
+        public bool editUser(Entities.User entUser)
+        {
+            if (entUser == null)
+            {
+                return false;
+            }
+            Users dbUser = this.db.Set<Users>().Where(x => x.id_user == entUser.id_user).FirstOrDefault();
+            dbUser = updateUser(dbUser, entUser);
+            if (dbUser == null)
+            {
+                return false;
+            }
+            this.db.SaveChanges();
+            return true;
+        }
+
+        private Users updateUser(Users dbUser, Entities.User entUser)
+        {
+            if (dbUser != null)
+            {
+                dbUser.id_user = entUser.id_user;
+                dbUser.username = entUser.username;
+                dbUser.first_name = entUser.first_name;
+                dbUser.last_name = entUser.last_name;
+                dbUser.password = entUser.password;
+                dbUser.id_gender = entUser.gender.id_gender;
+                dbUser.birthDate = entUser.birthDate;
+                dbUser.mail = entUser.mail;
+                dbUser.id_role = entUser.role.Id_userRole == 0 ? dbUser.id_role : entUser.role.Id_userRole;
+                return dbUser;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private Entities.User dbToUser(Users dbUser) {
             Entities.UserRole userRole = new Entities.UserRole();
             userRole.Id_userRole = dbUser.id_role;

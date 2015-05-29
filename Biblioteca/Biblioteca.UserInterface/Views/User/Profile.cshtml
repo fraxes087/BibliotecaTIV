@@ -56,14 +56,8 @@
         @Html.DisplayFor(model => model.role.description)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayName("User since: ")
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.date_sign)
-    </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { user = Model }) |
+    @Html.ActionLink("Edit", "EditProfile", new { userName = Model.username }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -82,7 +82,7 @@ namespace Biblioteca.Data
                 return false;
             } 
 
-            dbBook.stock = entRent.book.stock - 1;
+            dbBook.stock -= 1;
 
             Rents dbRent = new Rents();
             dbRent.id_state = this.db.Set<Rent_States>().Where(x => x.description == "RESERVED").FirstOrDefault().id_state;

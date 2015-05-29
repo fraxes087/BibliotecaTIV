@@ -258,6 +258,7 @@
     <Content Include="Views\Rent\Index.cshtml" />
     <Content Include="Views\Rent\Create.cshtml" />
     <Content Include="Views\User\Profile.cshtml" />
+    <Content Include="Views\User\EditProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

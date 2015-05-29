@@ -32,5 +32,10 @@ namespace Biblioteca.BusinessLogic
         public Entities.User FindUserByUserName(string entUser){
             return this.userManager.FindUserByUserName(entUser);
         }
+
+        public bool editUser(Entities.User entUser)
+        {
+            return this.userManager.editUser(entUser);
+        }
     }
 }
