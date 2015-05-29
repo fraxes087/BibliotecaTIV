@@ -1,0 +1,154 @@
+﻿@model Biblioteca.UserInterface.Models.User
+
+@{
+    ViewBag.Title = "register";
+    
+    var genderList = new List<Biblioteca.UserInterface.Models.Gender>{
+        new Biblioteca.UserInterface.Models.Gender(1,"Male"),
+        new Biblioteca.UserInterface.Models.Gender(2,"Female")
+    };
+    
+}
+
+<h2>register</h2>
+
+
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>User</legend>
+        <div style="color:red">@ViewBag.Error</div>
+        <div class="editor-label">
+            @Html.Label("UserName")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.username, null, "username")
+            <span id="userExists" style="color:red">User already exists.</span>
+            @Html.ValidationMessageFor(model => model.username)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Password")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.password)
+            @Html.ValidationMessageFor(model => model.password)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Repeat Password")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.valPass)
+            @Html.ValidationMessageFor(model => model.valPass)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("First Name")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.first_name)
+            @Html.ValidationMessageFor(model => model.first_name)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Last Name")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.last_name)
+            @Html.ValidationMessageFor(model => model.last_name)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Gender")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("genderId", (SelectList)@ViewBag.genderList, "Select gender")
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Mail")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.mail,null,"mail")
+            <span id="mailExists" style="color:red">Mail already exists.</span>
+            @Html.ValidationMessageFor(model => model.mail)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Birth Date")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.birthDate)
+            @Html.ValidationMessageFor(model => model.birthDate)
+        </div>
+        <br />
+        <p>
+            <input type="submit" class="btn btn-small btn-primary" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $("#userExists").hide();
+        $("#mailExists").hide();
+        $(document).ready(function () {
+            debugger;
+            $("#username").on("change", function (event) {
+                var username = $(this).val();
+                debugger;
+                if (username)
+                    userNameAlreadyExists(username);
+
+            });
+
+            $("#mail").on("change", function (event) {
+                var mail = $(this).val();
+                debugger;
+                if (mail)
+                    mailAlreadyExists(mail);
+            });
+
+            function mailAlreadyExists(mail) {
+                $.ajax({
+                    url: '@Url.Action("mailAlreadyExists","User")',
+                    data: { mail: mail },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (result) {
+                        if (result)
+                            $("#mailExists").show();
+                        else
+                            $("#mailExists").hide();
+                    }
+                });
+            }
+            function userNameAlreadyExists(name) {
+                $.ajax({
+                    url: '@Url.Action("userNameAlreadyExists","User")',
+                    data: {username: name},
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (result) {
+                        debugger;
+                        if (result) {
+                            $("#userExists").show();
+                        } else {
+                            $("#userExists").hide();
+                        }
+                    }
+
+                });
+            }
+        });
+    </script>
+}

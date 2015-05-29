@@ -1,0 +1,38 @@
+﻿@model Biblioteca.UserInterface.Models.User
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<fieldset >
+    <legend>Welcome Rental Service</legend>
+    <table>
+        <tr>
+            <td colspan:2>
+                <fieldset id="login">
+                    <legend></legend>
+                        @using (Html.BeginForm("Index", "User"))
+                        {
+                                <p style="color:red">@ViewBag.ErrMessage </p>
+                            
+                            <div class="">
+                                @Html.TextBoxFor(model => model.username, new { @placeholder="User"})
+                                @Html.ValidationMessageFor(model => model.username)
+                            </div>
+                            
+                            <div class="">
+                                @Html.PasswordFor(model => model.password, new { @placeholder="Password"})
+                                @Html.ValidationMessageFor(model => model.password)
+                            </div>
+                            <p>
+                                @Html.CheckBox("Remember")
+                                Remember me?
+                            </p>
+                            <input type="submit" value="login" />
+                        }
+                        @Html.ActionLink("Register now", "../User/Register")
+                    </fieldset>
+                </td>
+            </tr>
+    </table>
+</fieldset>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8331e66f60084b6a9bb2a87c3032b622" Name="Diagram1">
+        <EntityTypeShape EntityType="BiblioOnlineDb.Authors" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.Genders" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.Genres" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.Publishers" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.Rent_States" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.Rents" Width="1.5" PointX="7.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.UserRoles" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.Users" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
+        <AssociationConnector Association="BiblioOnlineDb.Genders_PK_Users_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="BiblioOnlineDb.Rent_States_PK_Rents_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="BiblioOnlineDb.Users_PK_Rents_FK" ManuallyRouted="false" />
+        <AssociationConnector Association="BiblioOnlineDb.UserRoles_PK_Users_FK" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.sysdiagrams" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="BiblioOnlineDb.Books" Width="1.5" PointX="3.625" PointY="3.375" />
+        <AssociationConnector Association="BiblioOnlineDb.Authors_PK_Books_FK" />
+        <AssociationConnector Association="BiblioOnlineDb.Books_PK_Rents_FK" />
+        <AssociationConnector Association="BiblioOnlineDb.Genres_PK_Books_FK" />
+        <AssociationConnector Association="BiblioOnlineDb.Publishers_PK_Books_FK" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

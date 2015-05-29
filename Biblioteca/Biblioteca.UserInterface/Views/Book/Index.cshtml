@@ -1,0 +1,80 @@
+﻿@model List<Biblioteca.UserInterface.Models.Book>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<h3>@ViewBag.Error</h3>
+<table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Publisher
+        </th>
+        <th>
+            Author Name
+        </th>
+        <th>
+            Author Last Name
+        </th>
+        <th>
+            Stock
+        </th>
+    </tr>
+        </thead>
+    <tbody>
+@foreach (var item in Model) {
+    <tr class="">
+        <td>
+            @Html.DisplayFor(modelItem => item.id_book)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.publisher)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.authorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.authorLastName)
+        </td>
+        <td>
+            <span class="stock">@Html.DisplayFor(modelItem => item.stock)</span>
+        </td>
+        <td>
+            @Html.ActionLink("Rent", "../Rent/Create", new { bookId = item.id_book, res_date = System.DateTime.Now }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+        </tbody>
+</table>
+
+<script type="text/ecmascript">
+    $(document).ready(function () {
+        $(".stock").each(function () {
+            if ($(this)[0].innerText == 1) {
+                $(this).parent().parent().addClass('warning');
+            }
+            if ($(this)[0].innerText < 1) {
+                $(this).parent().parent().addClass('danger');
+            }
+        });
+
+    });
+</script>

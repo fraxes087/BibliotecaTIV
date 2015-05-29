@@ -1,0 +1,63 @@
+﻿@model Biblioteca.UserInterface.Models.User
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>Profile</h2>
+
+<fieldset>
+    <legend>User</legend>
+
+    <div class="display-label">
+         @Html.DisplayName("Username: ")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.username)
+    </div>
+    <div class="display-label">
+         @Html.DisplayName("First Name: ")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.first_name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayName("Last Name: ")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.last_name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayName("Gender: ")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.gender.description)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayName("Mail: ")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.mail)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayName("Birth Date")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.birthDate)
+    </div>
+    <div class="display-label">
+         @Html.DisplayName("User role: ")
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.role.description)
+    </div>
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "EditProfile", new { userName = Model.username }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
