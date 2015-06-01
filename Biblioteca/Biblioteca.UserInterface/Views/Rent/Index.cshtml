@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<Biblioteca.UserInterface.Models.Rent>
-
 @{
-    ViewBag.Title = "Index";
+ViewBag.Title = "List of Rents";    
 }
-
-<h2>Index</h2>
+@if(User.IsInRole("client")){
+<h2>Your Rents</h2>
+}else{
+    <h2>List of Rents</h2>
+}
 <div style="color:red">@ViewBag.Error</div>
 
 <table class="table table-condensed table-hover">
@@ -33,7 +35,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.id_rent)
@@ -57,8 +60,8 @@
             @Html.DisplayFor(modelItem => item.ret_date)
         </td>
         <td>
-            @Html.ActionLink("Create", "Rent", new { book=item.book, res_date=System.DateTime.Now }) |
-            @Html.ActionLink("Cancel", "Rent", new { id=item.id_rent })
+            @Html.ActionLink("Create", "Rent", new { book = item.book, res_date = System.DateTime.Now }) |
+            @Html.ActionLink("Cancel", "Rent", new { id = item.id_rent })
         </td>
     </tr>
 }

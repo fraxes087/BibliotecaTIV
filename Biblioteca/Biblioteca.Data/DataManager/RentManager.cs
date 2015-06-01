@@ -15,19 +15,22 @@ namespace Biblioteca.Data
             var rentList = this.db.Set<Rents>().ToList();
             foreach (var curDbRent in rentList) {
                 var rentState = this.db.Set<Rent_States>().Where(x => x.id_state == curDbRent.id_state).FirstOrDefault();
-                
+                var user = this.db.Set<Users>().Where(x => x.id_user == curDbRent.id_user).FirstOrDefault();
+                var book = this.db.Set<Books>().Where(x => x.id_book == curDbRent.id_book).FirstOrDefault();
 #region Valido la fecha para cancelar las rentas que no fueron retiradas en mas de 2 dias
                 DateTime returnDate = curDbRent.res_date != null ? (System.DateTime)curDbRent.res_date : System.DateTime.MinValue;
                 DateTime now = System.DateTime.Now;
 
-                if (now >= returnDate.AddDays(2)) {
-                    rentState = this.db.Set<Rent_States>().Where(x => x.description == "CANCELED").FirstOrDefault();
+                if (now >= returnDate.AddDays(2) && curDbRent.ret_date == null && rentState.description == "RESERVED")
+                {
+                    rentState = this.db.Set<Rent_States>().Where(x => x.description == "CANCELLED").FirstOrDefault();
                     curDbRent.id_state = rentState.id_state;
+                    curDbRent.ret_date = System.DateTime.Now;
+                    book.stock += 1;
                     this.db.SaveChanges();
                 }
 #endregion
-                var user = this.db.Set<Users>().Where(x => x.id_user == curDbRent.id_user).FirstOrDefault();
-                var book = this.db.Set<Books>().Where(x => x.id_book == curDbRent.id_book).FirstOrDefault();
+                
                 if (rentState != null && user != null && book != null)
                 {
                     Entities.RentState entRentState = new Entities.RentState();
@@ -76,17 +79,23 @@ namespace Biblioteca.Data
 
         public bool reserveBook(Entities.Rent entRent)
         {
-            
-            Books dbBook = this.db.Set<Books>().Where(x => x.id_book == entRent.book.id_book).FirstOrDefault();
-            if (dbBook.stock <= 0) {
-                return false;
-            } 
-
-            dbBook.stock -= 1;
 
             Rents dbRent = new Rents();
             dbRent.id_state = this.db.Set<Rent_States>().Where(x => x.description == "RESERVED").FirstOrDefault().id_state;
             dbRent.id_user = this.db.Set<Users>().Where(x => x.username == entRent.user.username).FirstOrDefault().id_user;
+            //valido que el usuario no tenga alquilado y/o reservado un libro.
+            var user = this.db.Set<Rents>().Where(x => x.id_user == dbRent.id_user && (x.ret_date != null || x.Rent_States.description != "CANCELLED")).FirstOrDefault();
+            if (user != null)
+            {
+                return false;
+            }
+            
+            //Valido que el libro tenga stock
+            Books dbBook = this.db.Set<Books>().Where(x => x.id_book == entRent.book.id_book).FirstOrDefault();
+            if (dbBook.stock <= 0) {
+                return false;
+            } 
+            dbBook.stock -= 1;
             dbRent.id_book = entRent.book.id_book;
             dbRent.ren_date = entRent.ren_date;
             dbRent.res_date = entRent.res_date;

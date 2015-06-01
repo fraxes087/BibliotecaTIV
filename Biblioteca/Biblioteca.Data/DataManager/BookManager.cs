@@ -69,22 +69,19 @@ namespace Biblioteca.Data
             {
                 throw new Exception(ex.Message);
             }
-
-            
         }
 
         public List<Entities.Book> getBookList() {
-            
             try 
             {
                 List<Entities.Book> entBookList = new List<Entities.Book>();
-                foreach(var curBook in this.db.Books){
+                var bookList = this.db.Set<Books>().Where(x => x.stock > 0).ToList();
+                foreach(var curBook in bookList){
                     entBookList.Add(this.DBToEntities(curBook));
                 }
                 return entBookList;    
             }
             catch(Exception ex){
-
                 throw new Exception(ex.Message);
             }
             

@@ -19,28 +19,85 @@ namespace Biblioteca.UserInterface.Controllers
         //
         // GET: /Book/
 
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string searchString, string currentFilter)
         {
             try {
                 if (!User.Identity.IsAuthenticated)
                 {
                     return RedirectToAction("Index", "User");
                 }
+                ViewBag.CurrentSort = sortOrder;
+                ViewBag.NameSortParam = string.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
+                ViewBag.DateSortParam = sortOrder == "date" ? "date_desc" : "date";
+
+
+
                 Helper helper = new Helper();
                 List<Book> bookList = new List<Book>();
-                foreach(var curBook in this.bookManager.getBookList()){
-                    bookList.Add(helper.EntitiesToModel(curBook));
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    foreach (var curBook in this.bookManager.searchBy(searchString))
+                    {
+                        bookList.Add(helper.EntitiesToModel(curBook));
+                    }
+                }
+                else
+                {
+                    foreach (var curBook in this.bookManager.getBookList())
+                    {
+                        bookList.Add(helper.EntitiesToModel(curBook));
+                    }
+                }
+                
+                switch (sortOrder)
+                {
+                    case "title_desc": bookList.OrderByDescending(x => x.title);
+                        break;
+                    default: bookList.OrderBy(x => x.title);
+                        break;
+
                 }
 
-                return View(bookList);
+                return View(bookList.ToList());
             }
             catch(Exception ex){
                 ViewBag.error = ex.Message;
                 return View();
             }
-
-            
         }
+
+
+        //[HttpPost]
+        //public ActionResult Index() {
+        //    try {
+        //        List<Book> bookList = new List<Book>();
+        //        Helper helper = new Helper();
+        //        if(!String.IsNullOrEmpty(searchString)){
+        //        //foreach (var curBook in this.bookManager.searchBy(searchDesc)) {
+        //        //    bookList.Add(helper.EntitiesToModel(curBook));
+        //        //}
+        //        }else{
+        //            foreach(var curBook in this.bookManager.getBookList()){
+        //               bookList.Add(helper.EntitiesToModel(curBook));
+        //            }
+        //        }
+        //        var sortOrder = !string.IsNullOrEmpty(currentFilter) ? currentFilter : "";
+        //        switch(sortOrder)
+        //        {
+        //            case "title_desc": bookList.OrderByDescending(x => x.title);
+        //                break;
+        //            default: bookList.OrderBy(x => x.title);
+        //                break;
+
+        //        }
+
+        //        return View(bookList);
+        //    }
+        //    catch (Exception ex) { 
+        //        ViewBag.Error = "Error: " + ex.Message;
+        //        return View();
+        //    }
+        //}
         //
         // GET: /Book/Details/5
 
@@ -87,19 +144,14 @@ namespace Biblioteca.UserInterface.Controllers
                     {
                         ViewBag.Error = "The book already exists";
                         return View(newBook);
-
                     }
-                   
-
-
                 }
-
                 // TODO: Add insert logic here
-
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
+                ViewBag.Error = "Error: " + ex.Message;
                 return View();
             }
         }

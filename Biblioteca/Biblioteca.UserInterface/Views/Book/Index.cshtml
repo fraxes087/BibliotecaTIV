@@ -1,16 +1,27 @@
-﻿@model List<Biblioteca.UserInterface.Models.Book>
+﻿@using Biblioteca.UserInterface.Models
+@model List<Biblioteca.UserInterface.Models.Book>
+
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "List of available books";
 }
 
 <h2>Index</h2>
-
+@if(!User.IsInRole("client")){
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
 
 <h3>@ViewBag.Error</h3>
+@using (Html.BeginForm("Index", "Book", FormMethod.Get, new { @class = "navbar-form navbar-left", @role="search" }))
+{
+    <div class="form-group">
+	    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+        @*<input type="text" class="form-control" />*@
+	</div> <button type="submit" class="btn btn-default">Submit</button>
+
+}
 <table class="table table-condensed table-hover">
     <thead>
     <tr>
@@ -18,19 +29,19 @@
             #
         </th>
         <th>
-            Title
+            @Html.ActionLink("Title", "Index", new {sortOrder= ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
         </th>
         <th>
-            Publisher
+            @Html.ActionLink("Publisher","Index", new {sortOrder= ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
         </th>
         <th>
-            Author Name
+            @Html.ActionLink("Author Name", "Index", new {sortOrder=ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter })
         </th>
         <th>
-            Author Last Name
+            @Html.ActionLink("Author Last Name", "Index",new {sortOrder=ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
         </th>
         <th>
-            Stock
+            @Html.ActionLink("Stock","Index",new {sortOrder=ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
         </th>
     </tr>
         </thead>
@@ -56,8 +67,10 @@
             <span class="stock">@Html.DisplayFor(modelItem => item.stock)</span>
         </td>
         <td>
-            @Html.ActionLink("Rent", "../Rent/Create", new { bookId = item.id_book, res_date = System.DateTime.Now }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Reserve", "../Rent/Create", new { bookId = item.id_book, res_date = System.DateTime.Now }) |
+            @if(!User.IsInRole("client")){
+                @Html.ActionLink("Rent Book", "../Rent/RentBook", new { bookId = item.id_book }) 
+            }
             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>
     </tr>

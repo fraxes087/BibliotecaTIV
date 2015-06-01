@@ -27,9 +27,23 @@ namespace Biblioteca.UserInterface.Controllers
             }
             List<Rent> rentList = new List<Rent>();
             Helper helper = new Helper();
-            foreach (var curRent in this.rentManager.getAllRents()) { 
-                rentList.Add(helper.EntitiesToModel(curRent));
+            if (!User.IsInRole("client"))
+            {
+                foreach (var curRent in this.rentManager.getAllRents())
+                {
+                    rentList.Add(helper.EntitiesToModel(curRent));
+                }
             }
+            else {
+                foreach (var curRent in this.rentManager.getAllRents())
+                {
+                    if (User.Identity.Name == curRent.user.username)
+                    {
+                        rentList.Add(helper.EntitiesToModel(curRent));
+                    }
+                }
+            }
+
             return View(rentList);
         }
 
@@ -53,7 +67,7 @@ namespace Biblioteca.UserInterface.Controllers
             }
 
 
-            return RedirectToAction("Index", "Rent");
+            return RedirectToAction("Index", "Book");
         }
 
         public ActionResult Cancel(int id) {
