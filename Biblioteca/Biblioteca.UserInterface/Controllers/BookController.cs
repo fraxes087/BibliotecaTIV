@@ -34,31 +34,28 @@ namespace Biblioteca.UserInterface.Controllers
 
                 Helper helper = new Helper();
                 List<Book> bookList = new List<Book>();
+                foreach (var curBook in this.bookManager.getBookList())
+                {
+                    bookList.Add(helper.EntitiesToModel(curBook));
+                }
                 if (!String.IsNullOrEmpty(searchString))
                 {
-                    foreach (var curBook in this.bookManager.searchBy(searchString))
-                    {
-                        bookList.Add(helper.EntitiesToModel(curBook));
-                    }
+                    bookList = bookList.Where(x => x.title.Contains(searchString) || x.publisher.Contains(searchString) || x.authorName.Contains(searchString) || x.authorLastName.Contains(searchString)).ToList();
                 }
-                else
-                {
-                    foreach (var curBook in this.bookManager.getBookList())
-                    {
-                        bookList.Add(helper.EntitiesToModel(curBook));
-                    }
-                }
+                
                 
                 switch (sortOrder)
                 {
-                    case "title_desc": bookList.OrderByDescending(x => x.title);
+                    case "title_desc": 
+                        bookList = bookList.OrderByDescending(x => x.title).ToList();
                         break;
-                    default: bookList.OrderBy(x => x.title);
+                    default: 
+                        bookList =  bookList.OrderBy(x => x.title).ToList();
                         break;
 
                 }
 
-                return View(bookList.ToList());
+                return View(bookList);
             }
             catch(Exception ex){
                 ViewBag.error = ex.Message;
