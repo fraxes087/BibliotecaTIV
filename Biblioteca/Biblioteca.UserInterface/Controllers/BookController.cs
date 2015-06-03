@@ -19,7 +19,7 @@ namespace Biblioteca.UserInterface.Controllers
         //
         // GET: /Book/
 
-        public ActionResult Index(string sortOrder, string searchString, string currentFilter)
+        public ActionResult Index(string sortOrder, string searchString, string currentFilter, int? page)
         {
             try {
                 if (!User.Identity.IsAuthenticated)
@@ -27,10 +27,16 @@ namespace Biblioteca.UserInterface.Controllers
                     return RedirectToAction("Index", "User");
                 }
                 ViewBag.CurrentSort = sortOrder;
-                ViewBag.NameSortParam = string.IsNullOrEmpty(sortOrder) ? "title_desc" : "";
-                ViewBag.DateSortParam = sortOrder == "date" ? "date_desc" : "date";
 
+                if (page != null)
+                {
+                    page = 1;
+                }
+                else {
+                    searchString = currentFilter;
+                }
 
+                ViewBag.CurrentFilter = searchString;
 
                 Helper helper = new Helper();
                 List<Book> bookList = new List<Book>();
@@ -48,14 +54,50 @@ namespace Biblioteca.UserInterface.Controllers
                 {
                     case "title_desc": 
                         bookList = bookList.OrderByDescending(x => x.title).ToList();
+                        ViewBag.NameSortParam = "title_desc";
+                        break;
+                    case "publisher":
+                        bookList = bookList.OrderByDescending(x => x.publisher).ToList();
+                        ViewBag.NameSortParam = "publisher";
+                        break;
+                    case "publisher_desc":
+                        bookList = bookList.OrderBy(x => x.publisher).ToList();
+                        ViewBag.NameSortParam = "publisher_desc";
+                        break;
+                    case "authorName":
+                        bookList = bookList.OrderByDescending(x => x.authorName).ToList();
+                        ViewBag.NameSortParam = "authorName";
+                        break;
+                    case "authorName_desc":
+                        bookList = bookList.OrderBy(x => x.authorName).ToList();
+                        ViewBag.NameSortParam = "authorName_desc";
+                        break;
+                    case "authorLastName":
+                        bookList = bookList.OrderByDescending(x => x.authorLastName).ToList();
+                        ViewBag.NameSortParam = "authorLastName";
+                        break;
+                    case "authorLastName_desc":
+                        bookList = bookList.OrderBy(x => x.authorLastName).ToList();
+                        ViewBag.NameSortParam = "authorLastName_desc";
+                        break;
+                    case "stock":
+                        bookList = bookList.OrderBy(x => x.stock).ToList();
+                        ViewBag.NameStortParam = "stock";
+                        break;
+                    case "stock_desc":
+                        bookList = bookList.OrderByDescending(x => x.stock).ToList();
+                        ViewBag.NameSortParam = "stock_desc";
                         break;
                     default: 
                         bookList =  bookList.OrderBy(x => x.title).ToList();
+                        ViewBag.NameSortParam = "title";
                         break;
 
                 }
 
-                return View(bookList);
+                int pageSize = 3;
+                int pageNumber = (page ?? 1);
+                return View(bookList.ToPagedList(pageNumber, pageSize));
             }
             catch(Exception ex){
                 ViewBag.error = ex.Message;

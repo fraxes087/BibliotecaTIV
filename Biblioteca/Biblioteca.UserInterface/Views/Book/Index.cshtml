@@ -18,7 +18,6 @@
 {
     <div class="form-group">
 	    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
-        @*<input type="text" class="form-control" />*@
 	</div> <button type="submit" class="btn btn-default">Submit</button>
 
 }
@@ -29,19 +28,19 @@
             #
         </th>
         <th>
-            @Html.ActionLink("Title", "Index", new {sortOrder= ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
+            @Html.ActionLink("Title", "Index", new {sortOrder= ViewBag.NameSortParam == "title" ? "title_desc" : "title" , currentFilter=ViewBag.CurrentFilter})
         </th>
         <th>
-            @Html.ActionLink("Publisher","Index", new {sortOrder= ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
+            @Html.ActionLink("Publisher","Index", new {sortOrder= ViewBag.NameSortParam == "publisher" ? "publisher_desc" : "publisher", currentFilter=ViewBag.CurrentFilter})
         </th>
         <th>
-            @Html.ActionLink("Author Name", "Index", new {sortOrder=ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter })
+            @Html.ActionLink("Author Name", "Index", new {sortOrder= ViewBag.NameSortParam == "authorName" ? "authorName_desc" : "authorName", currentFilter=ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("Author Last Name", "Index",new {sortOrder=ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
+            @Html.ActionLink("Author Last Name", "Index",new {sortOrder= ViewBag.NameSortParam == "authorLastName" ? "authorLastName_desc" : "authorLastName", currentFilter=ViewBag.CurrentFilter})
         </th>
         <th>
-            @Html.ActionLink("Stock","Index",new {sortOrder=ViewBag.NameSortParam, currentFilter=ViewBag.CurrentFilter})
+            @Html.ActionLink("Stock","Index",new {sortOrder= ViewBag.NameSortParam == "stock" ? "stock_desc" : "stock", currentFilter=ViewBag.CurrentFilter})
         </th>
     </tr>
         </thead>
